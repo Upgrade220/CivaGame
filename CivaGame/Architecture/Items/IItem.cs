@@ -6,5 +6,6 @@ namespace CivaGame
 {
     public interface IItem
     {
+        string GetImageFileName();
     }
 }
