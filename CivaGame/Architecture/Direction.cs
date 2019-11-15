@@ -1,0 +1,4 @@
+﻿namespace CivaGame
+{
+    public enum Direction { Up, Down, Right, Left};
+}

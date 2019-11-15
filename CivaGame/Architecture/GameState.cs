@@ -1,4 +1,4 @@
 ﻿namespace CivaGame
 {
-    enum GameState { Menu, Action, Score };
+    public enum GameState { Menu, Action, Score };
 }
