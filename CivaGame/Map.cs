@@ -6,9 +6,9 @@ namespace CivaGame
 {
     public class Map 
     {
-        private int mapWidth;
-        private int mapHeight;
-        public ICell[,] WorldMap { get; }
+        private static int mapWidth;
+        private static int mapHeight;
+        public static ICell[,] WorldMap { get; }
 
         public Map(int x, int y)
         {
@@ -25,12 +25,12 @@ namespace CivaGame
                 }
         }
 
-        public ICell GetCellType(int x, int y)
+        public static ICell GetCellType(int x, int y)
         {
             return WorldMap[x, y];
         }
 
-        public bool IsInBorders(int x,int y)
+        public static bool IsInBorders(int x,int y)
         {
             return (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight);
         }
@@ -40,7 +40,7 @@ namespace CivaGame
     {
         public string GetImageFileName()
         {
-            throw new NotImplementedException();
+            return "Grass.png";
         }
 
         public void Interact()
@@ -53,7 +53,7 @@ namespace CivaGame
     {
         public string GetImageFileName()
         {
-            throw new NotImplementedException();
+            return "EmptyGrass.png";
         }
 
         public void Interact()
