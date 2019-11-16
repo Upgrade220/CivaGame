@@ -10,6 +10,11 @@ namespace CivaGame
         {
             return "EmptyItem.png";
         }
+
+        public int MaxStack()
+        {
+            return 0;
+        }
     }
 
     class Food : IItem
@@ -17,6 +22,11 @@ namespace CivaGame
         public string GetImageFileName()
         {
             return "Food.png";
+        }
+
+        public int MaxStack()
+        {
+            return 8;
         }
     }
 
@@ -26,6 +36,11 @@ namespace CivaGame
         {
             return "Wood.png";
         }
+
+        public int MaxStack()
+        {
+            return 16;
+        }
     }
 
     class Stone : IItem
@@ -33,6 +48,11 @@ namespace CivaGame
         public string GetImageFileName()
         {
             return "Stone.png";
+        }
+
+        public int MaxStack()
+        {
+            return 16;
         }
     }
 
@@ -42,6 +62,11 @@ namespace CivaGame
         {
             return "Gold.png";
         }
+
+        public int MaxStack()
+        {
+            return 16;
+        }
     }
 
     class Axe : IItem
@@ -50,6 +75,11 @@ namespace CivaGame
         {
             return "Axe.png";
         }
+
+        public int MaxStack()
+        {
+            return 1;
+        }
     }
 
     class Pickaxe : IItem
@@ -57,6 +87,11 @@ namespace CivaGame
         public string GetImageFileName()
         {
             return "Pickaxe.png";
+        }
+
+        public int MaxStack()
+        {
+            return 1;
         }
     }
 }
