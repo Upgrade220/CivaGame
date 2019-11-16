@@ -6,9 +6,9 @@ namespace CivaGame
 {
     public class Map 
     {
-        private static int mapWidth;
-        private static int mapHeight;
-        public static ICell[,] WorldMap { get; }
+        private int mapWidth;
+        private int mapHeight;
+        public ICell[,] WorldMap { get; }
 
         public Map(int x, int y)
         {
@@ -25,12 +25,12 @@ namespace CivaGame
                 }
         }
 
-        public static ICell GetCellType(int x, int y)
+        public ICell GetCellType(int x, int y)
         {
             return WorldMap[x, y];
         }
 
-        public static bool IsInBorders(int x,int y)
+        public bool IsInBorders(int x,int y)
         {
             return (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight);
         }
