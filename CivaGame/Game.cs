@@ -12,6 +12,7 @@ namespace CivaGame
         public int Score { get; private set; }
         public GameState CurrentState { get; private set; }
         Player Player;
+        Map Map;
 
         public Game(int x, int y)
         {
@@ -24,12 +25,14 @@ namespace CivaGame
             return new Point(Player.X, Player.Y);
         }
 
-        public void StartAction(int x, int y, Point player)
+        public void StartAction(int x, int y)
         {
+            var rnd = new Random();
+            var playerX = rnd.Next(0, x);
+            var playerY = rnd.Next(0, y);
             CurrentState = GameState.Action;
-            MapSizeX = x;
-            MapSizeY = y;
-            Player = new Player(player.X, player.Y);
+            Player = new Player(playerX,playerY);
+            Map = new Map(x, y);
         }
 
         public int EndAction()
