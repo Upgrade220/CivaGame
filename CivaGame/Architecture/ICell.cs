@@ -6,7 +6,7 @@ namespace CivaGame
 {
     public interface ICell
     {
-        void Interact();
+        void Interact(int x, int y);
         string GetImageFileName();
 
     }

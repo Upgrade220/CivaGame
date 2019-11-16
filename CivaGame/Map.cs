@@ -4,11 +4,11 @@ using System.Text;
 
 namespace CivaGame
 {
-    public class Map 
+    public class Map
     {
         private int mapWidth;
         private int mapHeight;
-        public ICell[,] WorldMap { get; }
+        public static ICell[,] WorldMap;
 
         public Map(int x, int y)
         {
@@ -20,7 +20,7 @@ namespace CivaGame
                 {
                     var value = rnd.Next(0, 100);
                     if (value < 10) WorldMap[i, j] = new Cave();
-                    if (value > 60) WorldMap[i, j] = new Forest();
+                    else if (value > 60) WorldMap[i, j] = new Forest();
                     else WorldMap[i, j] = new Grass();
                 }
         }
@@ -30,74 +30,74 @@ namespace CivaGame
             return WorldMap[x, y];
         }
 
-        public bool IsInBorders(int x,int y)
+        public bool IsInBorders(int x, int y)
         {
             return (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight);
         }
-    }
-
-    class Grass : ICell
-    {
-        public string GetImageFileName()
+        class Grass : ICell
         {
-            return "Grass.png";
+            public string GetImageFileName()
+            {
+                return "Grass.png";
+            }
+
+            public void Interact(int x, int y)
+            {
+                WorldMap[x, y] = new EmptyGrass();
+                
+            }
         }
 
-        public void Interact()
+        class EmptyGrass : ICell
         {
-            throw new NotImplementedException();
-        }
-    }
+            public string GetImageFileName()
+            {
+                return "EmptyGrass.png";
+            }
 
-    class EmptyGrass : ICell
-    {
-        public string GetImageFileName()
-        {
-            return "EmptyGrass.png";
-        }
-
-        public void Interact()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    class Forest : ICell
-    {
-        public string GetImageFileName()
-        {
-            throw new NotImplementedException();
+            public void Interact(int x, int y)
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public void Interact()
+        class Forest : ICell
         {
-            throw new NotImplementedException();
-        }
-    }
+            public string GetImageFileName()
+            {
+                return "Forest.png";
+            }
 
-    class Cave : ICell
-    {
-        public string GetImageFileName()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Interact()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    class Church : ICell
-    {
-        public string GetImageFileName()
-        {
-            throw new NotImplementedException();
+            public void Interact(int x, int y)
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public void Interact()
+        class Cave : ICell
         {
-            throw new NotImplementedException();
+            public string GetImageFileName()
+            {
+                return "Cave.png";
+            }
+
+            public void Interact(int x, int y)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        class Church : ICell
+        {
+            public string GetImageFileName()
+            {
+                return "Church.png";
+            }
+
+            public void Interact(int x, int y)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
