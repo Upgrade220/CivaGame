@@ -40,7 +40,7 @@ namespace CivaGame
     {
         public string GetImageFileName()
         {
-            throw new NotImplementedException();
+            return "Grass.png";
         }
 
         public void Interact()
@@ -53,7 +53,7 @@ namespace CivaGame
     {
         public string GetImageFileName()
         {
-            throw new NotImplementedException();
+            return "EmptyGrass.png";
         }
 
         public void Interact()
