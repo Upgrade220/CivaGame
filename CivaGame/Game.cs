@@ -55,16 +55,28 @@ namespace CivaGame
             switch (direction)
             {
                 case Direction.Up:
-                    Player.Y--;
+                    if (Map.IsInBorders(Player.X, Player.Y - 1))
+                        Player.Y--;
+                    else
+                        Player.Y = MapSizeY - 1;
                     break;
                 case Direction.Down:
-                    Player.Y++;
+                    if (Map.IsInBorders(Player.X, Player.Y + 1))
+                        Player.Y++;
+                    else
+                        Player.Y = 0;
                     break;
                 case Direction.Left:
-                    Player.X--;
+                    if (Map.IsInBorders(Player.X, Player.Y - 1))
+                        Player.X--;
+                    else
+                        Player.X = MapSizeX - 1;
                     break;
                 case Direction.Right:
-                    Player.X++;
+                    if (Map.IsInBorders(Player.X, Player.Y + 1))
+                        Player.X++;
+                    else
+                        Player.X = 0;
                     break;
             }
         }
