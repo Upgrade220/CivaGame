@@ -6,6 +6,5 @@ namespace CivaGame
     {
         string GetImageFileName();
         int GetDrawingPriority();
-        void Move(Direction direction);
     }
 }

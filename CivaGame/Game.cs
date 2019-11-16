@@ -9,10 +9,10 @@ namespace CivaGame
     {
         public int MapSizeX { get; }
         public int MapSizeY { get; }
-        public static int Score { get; private set; }
-        public static GameState CurrentState { get; private set; }
-        public static Player Player { get; private set; }
-        public static Map Map { get; private set; }
+        public int Score { get; private set; }
+        public GameState CurrentState { get; private set; }
+        public Player Player { get; private set; }
+        public Map Map { get; private set; }
 
         public Game()
         {
@@ -48,6 +48,25 @@ namespace CivaGame
                 Score = 0;
             else
                 Score += delta;
+        }
+
+        public void Move(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+                    Player.Y--;
+                    break;
+                case Direction.Down:
+                    Player.Y++;
+                    break;
+                case Direction.Left:
+                    Player.X--;
+                    break;
+                case Direction.Right:
+                    Player.X++;
+                    break;
+            }
         }
     }
 }
