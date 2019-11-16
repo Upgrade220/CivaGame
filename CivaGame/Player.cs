@@ -5,11 +5,11 @@ namespace CivaGame
 {
     public class Player : ICreature
     {
-        public int HP { get; private set; }
-        public int X { get; private set; }
-        public int Y { get; private set; }
-        public int Food { get; private set; }
-        public IItem[] Inventory { get; }
+        public static int HP { get; private set; }
+        public static int X { get; private set; }
+        public static int Y { get; private set; }
+        public static int Food { get; private set; }
+        public static IItem[] Inventory { get; set; }
 
         public Player(int x, int y)
         {
@@ -51,6 +51,7 @@ namespace CivaGame
             switch(direction)
             {
                 case Direction.Up :
+                    if()
                     Y--;
                     break;
                 case Direction.Down :

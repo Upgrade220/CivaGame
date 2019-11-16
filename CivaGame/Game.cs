@@ -7,17 +7,18 @@ namespace CivaGame
 {
     class Game
     {
-        public int MapSizeX { get; private set; }
-        public int MapSizeY { get; private set; }
-        public int Score { get; private set; }
-        public GameState CurrentState { get; private set; }
-        Player Player;
-        Map Map;
+        public int MapSizeX { get; }
+        public int MapSizeY { get; }
+        public static int Score { get; private set; }
+        public static GameState CurrentState { get; private set; }
+        public static Player Player { get; private set; }
+        public static Map Map { get; private set; }
 
-        public Game(int x, int y)
+        public Game()
         {
             CurrentState = GameState.Menu;
             Score = 0;
+            MapSizeX = MapSizeY = 9;
         }
 
         public Point GetPlayerPosition()
@@ -25,14 +26,14 @@ namespace CivaGame
             return new Point(Player.X, Player.Y);
         }
 
-        public void StartAction(int x, int y)
+        public void StartAction()
         {
             var rnd = new Random();
-            var playerX = rnd.Next(0, x);
-            var playerY = rnd.Next(0, y);
+            var playerX = rnd.Next(0, MapSizeX - 1);
+            var playerY = rnd.Next(0, MapSizeY - 1);
             CurrentState = GameState.Action;
             Player = new Player(playerX,playerY);
-            Map = new Map(x, y);
+            Map = new Map(MapSizeX, MapSizeY);
         }
 
         public int EndAction()
