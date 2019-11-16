@@ -8,7 +8,7 @@ namespace CivaGame
     {
         public string GetImageFileName()
         {
-            throw new NotImplementedException();
+            return "EmptyItem.png";
         }
     }
 
@@ -16,7 +16,7 @@ namespace CivaGame
     {
         public string GetImageFileName()
         {
-            throw new NotImplementedException();
+            return "Food.png";
         }
     }
 
@@ -24,7 +24,7 @@ namespace CivaGame
     {
         public string GetImageFileName()
         {
-            throw new NotImplementedException();
+            return "Wood.png";
         }
     }
 
@@ -32,7 +32,7 @@ namespace CivaGame
     {
         public string GetImageFileName()
         {
-            throw new NotImplementedException();
+            return "Stone.png";
         }
     }
 
@@ -40,7 +40,7 @@ namespace CivaGame
     {
         public string GetImageFileName()
         {
-            throw new NotImplementedException();
+            return "Gold.png";
         }
     }
 
@@ -48,7 +48,7 @@ namespace CivaGame
     {
         public string GetImageFileName()
         {
-            throw new NotImplementedException();
+            return "Axe.png";
         }
     }
 
@@ -56,7 +56,7 @@ namespace CivaGame
     {
         public string GetImageFileName()
         {
-            throw new NotImplementedException();
+            return "Pickaxe.png";
         }
     }
 }

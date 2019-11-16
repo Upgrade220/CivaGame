@@ -57,7 +57,7 @@ namespace CivaGame
 
             public void Interact(int x, int y)
             {
-                throw new NotImplementedException();
+                
             }
         }
 
@@ -70,7 +70,7 @@ namespace CivaGame
 
             public void Interact(int x, int y)
             {
-                throw new NotImplementedException();
+                WorldMap[x, y] = new Grass();
             }
         }
 
@@ -83,7 +83,7 @@ namespace CivaGame
 
             public void Interact(int x, int y)
             {
-                throw new NotImplementedException();
+                
             }
         }
 
@@ -96,7 +96,7 @@ namespace CivaGame
 
             public void Interact(int x, int y)
             {
-                throw new NotImplementedException();
+               
             }
         }
     }
