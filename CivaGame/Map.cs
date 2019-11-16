@@ -4,14 +4,17 @@ using System.Text;
 
 namespace CivaGame
 {
-    public class Map : IMap
+    public class Map 
     {
-        private static IMap[,] WorldMap;
+        private int mapWidth;
+        private int mapHeight;
+        public ICell[,] WorldMap { get; }
 
-        public void CreateMap(int mapWidth, int mapHeight)
+        public Map(int x, int y)
         {
+            mapWidth = x;
+            mapHeight = y;
             var rnd = new Random();
-            WorldMap = new IMap[mapWidth, mapHeight];
             for (var i = 0; i < mapWidth; i++)
                 for (var j = 0; j < mapHeight; j++)
                 {
@@ -22,80 +25,77 @@ namespace CivaGame
                 }
         }
 
-        public IMap GetCellType(int x, int y)
+        public ICell GetCellType(int x, int y)
         {
             return WorldMap[x, y];
         }
 
-        public static void Interact(int x, int y)
+        public bool IsInBorders(int x,int y)
         {
-            if (WorldMap[x,y] is Grass)
-                InteractWithGrass(x, y);
-            if (WorldMap[x, y] is Forest)
-                InteractWithForest(x, y);
-            if (WorldMap[x, y] is Cave)
-                InteractWithCave(x, y);
-        }
-
-        private static void InteractWithGrass(int x, int y)
-        {
-            WorldMap[x, y] = CellType.EmptyGrass;
-            // получает еду
-        }
-
-        private static void InteractWithForest(int x, int y)
-        {
-            //если есть топор делает ето
-            WorldMap[x, y] = CellType.Grass;
-            // получает доски 
-        }
-
-        private static void InteractWithCave(int x, int y)
-        {
-            // 
-        }
-
-        public string GetImageFileName()
-        {
-            throw new NotImplementedException();
+            return (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight);
         }
     }
 
-    class Grass : IMap
+    class Grass : ICell
     {
         public string GetImageFileName()
         {
             throw new NotImplementedException();
         }
-    }
 
-    class EmptyGrass : IMap
-    {
-        public string GetImageFileName()
+        public void Interact()
         {
             throw new NotImplementedException();
         }
     }
 
-    class Forest : IMap
+    class EmptyGrass : ICell
     {
         public string GetImageFileName()
         {
             throw new NotImplementedException();
         }
-    }
 
-    class Cave : IMap
-    {
-        public string GetImageFileName()
+        public void Interact()
         {
             throw new NotImplementedException();
         }
     }
 
-    class Church : IMap
+    class Forest : ICell
     {
         public string GetImageFileName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Interact()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class Cave : ICell
+    {
+        public string GetImageFileName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Interact()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class Church : ICell
+    {
+        public string GetImageFileName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Interact()
         {
             throw new NotImplementedException();
         }

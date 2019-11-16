@@ -4,8 +4,9 @@ using System.Text;
 
 namespace CivaGame
 {
-    public interface IMap
+    public interface ICell
     {
+        void Interact();
         string GetImageFileName();
 
     }
