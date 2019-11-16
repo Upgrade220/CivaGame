@@ -34,7 +34,10 @@ namespace CivaGame
         public void ChangeFood (int food)
         {
             if ((Food + food) <= 0)
+            {
                 HP = 0;
+                IsAlive = false;
+            }
             else if ((Food + food) > 100)
                 Food = 100;
             else
