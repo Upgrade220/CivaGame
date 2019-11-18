@@ -73,6 +73,12 @@ namespace CivaGame
             }
         }
 
+        public void PlayerEat(int inventoryIndex)
+        {
+            if (Player.Inventory[inventoryIndex] is FoodItem)
+                Player.UseItem(inventoryIndex, 1);
+        }
+
         public bool PlayerBuildChurch()
         {
             if (Player.BuildChurch())

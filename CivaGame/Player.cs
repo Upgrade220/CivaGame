@@ -121,18 +121,25 @@ namespace CivaGame
                     {
                         WoodCount -= DifficultyRate * 10;
                         woodFlag = false;
+                        InventoryItemsCount[i] -= DifficultyRate * 10;
                     }
                     else if (item is Stone && stoneFlag)
                     {
                         StoneCount -= DifficultyRate * 5;
                         stoneFlag = false;
+                        InventoryItemsCount[i] -= DifficultyRate * 5;
                     }
                     else if (item is Gold && goldFlag)
                     {
                         GoldCount -= DifficultyRate;
                         goldFlag = false;
+                        InventoryItemsCount[i] -= DifficultyRate;
                     }
                 }
+                if (WoodCount == DifficultyRate * 10 && StoneCount == DifficultyRate * 5 && GoldCount == DifficultyRate)
+                    IsEnoughForChurch = true;
+                else
+                    IsEnoughForChurch = false;
                 return true;
             }
             return false;
