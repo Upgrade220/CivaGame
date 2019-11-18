@@ -167,7 +167,7 @@ namespace CivaGame
 
         public string GetImageFileName()
         {
-            throw new NotImplementedException();
+            return "Player.png";
         }
 
     }

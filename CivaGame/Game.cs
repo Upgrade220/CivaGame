@@ -13,6 +13,7 @@ namespace CivaGame
         public GameState CurrentState { get; private set; }
         public Player Player { get; private set; }
         public Map Map { get; private set; }
+        public Trader Trader { get; private set; }
 
         public Game()
         {
@@ -31,9 +32,12 @@ namespace CivaGame
             var rnd = new Random();
             var playerX = rnd.Next(0, MapSizeX - 1);
             var playerY = rnd.Next(0, MapSizeY - 1);
+            var traderX = rnd.Next(0, MapSizeX - 1);
+            var traderY = rnd.Next(0, MapSizeY - 1);
             CurrentState = GameState.Action;
             Player = new Player(playerX, playerY, 1);
             Map = new Map(MapSizeX, MapSizeY);
+            Trader = new Trader(traderX, traderY);
         }
 
         public int EndAction()
@@ -77,6 +81,23 @@ namespace CivaGame
         {
             if (Player.Inventory[inventoryIndex] is FoodItem)
                 Player.UseItem(inventoryIndex, 1);
+        }
+
+        public void PlayerBuy(IItem item)
+        {
+            if ((Player.X == Trader.X) && (Player.Y == Trader.Y))
+            {
+                if (item is Axe && Money >= 50)
+                {
+                    Player.AddItem(new Axe());
+                    ChangeMoney(-50);
+                }
+                else if (item is Pickaxe && Money >= 100)
+                {
+                    Player.AddItem(new Pickaxe());
+                    ChangeMoney(-100);
+                }
+            }
         }
 
         public bool PlayerBuildChurch()
