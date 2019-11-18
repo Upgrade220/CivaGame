@@ -17,7 +17,7 @@ namespace CivaGame
         }
     }
 
-    class Food : IItem
+    class FoodItem : IItem
     {
         public string GetImageFileName()
         {
@@ -39,7 +39,7 @@ namespace CivaGame
 
         public int MaxStack()
         {
-            return 16;
+            return 64;
         }
     }
 
@@ -52,7 +52,7 @@ namespace CivaGame
 
         public int MaxStack()
         {
-            return 16;
+            return 64;
         }
     }
 
@@ -65,7 +65,7 @@ namespace CivaGame
 
         public int MaxStack()
         {
-            return 16;
+            return 64;
         }
     }
 

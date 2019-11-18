@@ -9,7 +9,7 @@ namespace CivaGame
     {
         public int MapSizeX { get; }
         public int MapSizeY { get; }
-        public int Score { get; private set; }
+        public int Money { get; private set; }
         public GameState CurrentState { get; private set; }
         public Player Player { get; private set; }
         public Map Map { get; private set; }
@@ -17,7 +17,7 @@ namespace CivaGame
         public Game()
         {
             CurrentState = GameState.Menu;
-            Score = 0;
+            Money = 0;
             MapSizeX = MapSizeY = 9;
         }
 
@@ -32,22 +32,14 @@ namespace CivaGame
             var playerX = rnd.Next(0, MapSizeX - 1);
             var playerY = rnd.Next(0, MapSizeY - 1);
             CurrentState = GameState.Action;
-            Player = new Player(playerX,playerY);
+            Player = new Player(playerX, playerY, 1);
             Map = new Map(MapSizeX, MapSizeY);
         }
 
         public int EndAction()
         {
             CurrentState = GameState.Score;
-            return Score;
-        }
-
-        public void ChangeScore(int delta)
-        {
-            if ((Score + delta) < 0)
-                Score = 0;
-            else
-                Score += delta;
+            return Money;
         }
 
         public void Move(Direction direction)
@@ -79,6 +71,60 @@ namespace CivaGame
                         Player.X = 0;
                     break;
             }
+        }
+
+        public bool PlayerBuildChurch()
+        {
+            if (Player.BuildChurch())
+            {
+                Map.BuildChurch(Player.X, Player.Y);
+                return true;
+            }
+            return false;
+        }
+
+        public void InteractPlayerWithMap(int inventoryIndex)
+        {
+            var rnd = new Random();
+            var cell = Map.Interact(Player.X, Player.Y, Player.Inventory[inventoryIndex]);
+            if (cell is Map.Grass)
+                Player.AddItem(new FoodItem());
+            else if (cell is Map.Forest)
+            {
+                Player.AddItem(new Wood());
+                ChangeMoney(10);
+                var value = rnd.Next(0, 100);
+                if(value < 5)
+                {
+                    ChangeMoney(-10);
+                    Player.GetDamage(49);
+                }
+            }
+            else if (cell is Map.Cave)
+            {
+                Player.AddItem(new Stone());
+                ChangeMoney(15);
+                var value = rnd.Next(0, 100);
+                if (value < 10)
+                {
+                    Player.AddItem(new Gold());
+                    ChangeMoney(100);
+                }
+                value = rnd.Next(0, 100);
+                if (value < 10)
+                {
+                    ChangeMoney(-150);
+                    Player.GetDamage(25);
+                }
+            }
+        }
+
+        private void ChangeMoney(int delta)
+        {
+            if ((Money + delta) < 0)
+                Money = 0;
+            else
+                Money += delta;
         }
     }
 }

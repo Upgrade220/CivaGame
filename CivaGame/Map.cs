@@ -25,78 +25,63 @@ namespace CivaGame
                 }
         }
 
-        public ICell GetCellType(int x, int y)
-        {
-            return WorldMap[x, y];
-        }
-
         public bool IsInBorders(int x, int y)
         {
             return (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight);
         }
-        class Grass : ICell
+
+        public void BuildChurch(int x, int y)
+        {
+            WorldMap[x, y] = new Church();
+        }
+
+        public ICell Interact(int x, int y, IItem item)
+        {
+            var cell = WorldMap[x, y];
+            if (cell is Forest && item is Axe)
+                WorldMap[x, y] = new Grass();
+            else if (cell is Grass)
+                WorldMap[x, y] = new EmptyGrass();
+            return cell;
+        }
+
+        public class Grass : ICell
         {
             public string GetImageFileName()
             {
                 return "Grass.png";
             }
-
-            public void Interact(int x, int y)
-            {
-                WorldMap[x, y] = new EmptyGrass();
-                
-            }
         }
 
-        class EmptyGrass : ICell
+        public class EmptyGrass : ICell
         {
             public string GetImageFileName()
             {
                 return "EmptyGrass.png";
             }
-
-            public void Interact(int x, int y)
-            {
-                
-            }
         }
 
-        class Forest : ICell
+        public class Forest : ICell
         {
             public string GetImageFileName()
             {
                 return "Forest.png";
             }
-
-            public void Interact(int x, int y)
-            {
-                WorldMap[x, y] = new Grass();
-            }
         }
 
-        class Cave : ICell
+        public class Cave : ICell
         {
             public string GetImageFileName()
             {
                 return "Cave.png";
             }
-
-            public void Interact(int x, int y)
-            {
-                
-            }
         }
 
-        class Church : ICell
+        public class Church : ICell
         {
             public string GetImageFileName()
             {
                 return "Church.png";
-            }
-
-            public void Interact(int x, int y)
-            {
-               
             }
         }
     }

@@ -13,8 +13,20 @@ namespace CivaGame
         public bool IsAlive { get; private set; }
         public IItem[] Inventory { get; private set; }
         public int[] InventoryItemsCount { get; private set; }
+        private bool IsEnoughForChurch;
+        private int WoodCount, StoneCount, GoldCount;
+        private int DifficultyRate
+        { get { return DifficultyRate; }
+            set
+            {
+                if (DifficultyRate * 10 >= 64)
+                    DifficultyRate = 10;
+                else
+                    DifficultyRate = value;
+            }
+        }
 
-        public Player(int x, int y)
+        public Player(int x, int y, int difficultyRate)
         {
             var inventoryLenght = 8;
             HP = 100;
@@ -22,6 +34,7 @@ namespace CivaGame
             Y = y;
             Food = 100;
             IsAlive = true;
+            IsEnoughForChurch = false;
             Inventory = new IItem[inventoryLenght];
             InventoryItemsCount = new int[inventoryLenght];
             for (int i = 0; i < 8; i++)
@@ -29,6 +42,8 @@ namespace CivaGame
                 InventoryItemsCount[i] = 0;
                 Inventory[i] = new EmptyItem();
             }
+            WoodCount = StoneCount = GoldCount = 0;
+            DifficultyRate = difficultyRate;
         }
 
         public void ChangeFood (int food)
@@ -55,7 +70,7 @@ namespace CivaGame
                 HP -= damageValue;
         }
 
-        public void Heal (int healValue)
+        private void Heal (int healValue)
         {
             if ((HP + healValue) > 100)
                 HP = 100;
@@ -82,11 +97,52 @@ namespace CivaGame
                 Inventory[emptySlot] = item;
                 InventoryItemsCount[emptySlot] = 1;
             }
+            if (item is Wood)
+                WoodCount++;
+            else if (item is Stone)
+                StoneCount++;
+            else if (item is Gold)
+                GoldCount++;
+            if (WoodCount == DifficultyRate * 10 && StoneCount == DifficultyRate * 5 && GoldCount == DifficultyRate)
+                IsEnoughForChurch = true;
+        }
+
+        public bool BuildChurch()
+        {
+            var woodFlag = true;
+            var stoneFlag = true;
+            var goldFlag = true;
+            if (IsEnoughForChurch)
+            {
+                for (var i = 0; i < Inventory.Length; i++)
+                {
+                    var item = Inventory[i];
+                    if (item is Wood && woodFlag)
+                    {
+                        WoodCount -= DifficultyRate * 10;
+                        woodFlag = false;
+                    }
+                    else if (item is Stone && stoneFlag)
+                    {
+                        StoneCount -= DifficultyRate * 5;
+                        stoneFlag = false;
+                    }
+                    else if (item is Gold && goldFlag)
+                    {
+                        GoldCount -= DifficultyRate;
+                        goldFlag = false;
+                    }
+                }
+                return true;
+            }
+            return false;
         }
 
         public IItem UseItem(int i, int count)
         {
             var item = Inventory[i];
+            if (item is FoodItem)
+                Heal(25);
             if(!(item is Axe) || !(item is Pickaxe))
                 InventoryItemsCount[i] -= count;
             if (InventoryItemsCount[i] <= 0)
@@ -95,11 +151,6 @@ namespace CivaGame
                 InventoryItemsCount[i] = 0;
             }
             return item;
-        }
-
-        public Point GetPosition()
-        {
-            return new Point(X, Y);
         }
 
         public int GetDrawingPriority()
