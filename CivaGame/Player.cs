@@ -15,16 +15,7 @@ namespace CivaGame
         public int[] InventoryItemsCount { get; private set; }
         private bool IsEnoughForChurch;
         private int WoodCount, StoneCount, GoldCount;
-        private int DifficultyRate
-        { get { return DifficultyRate; }
-            set
-            {
-                if (DifficultyRate * 10 >= 64)
-                    DifficultyRate = 10;
-                else
-                    DifficultyRate = value;
-            }
-        }
+        private readonly int DifficultyRate;
 
         public Player(int x, int y, int difficultyRate)
         {
@@ -45,7 +36,10 @@ namespace CivaGame
             WoodCount = 0;
             StoneCount = 0; 
             GoldCount = 0;
-            DifficultyRate = difficultyRate;
+            if (difficultyRate * 10 >= 64)
+                DifficultyRate = 10;
+            else
+                DifficultyRate = difficultyRate;
         }
 
         public void ChangeFood (int food)
