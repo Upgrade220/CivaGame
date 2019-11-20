@@ -8,7 +8,7 @@ namespace CivaGame
     {
         readonly int mapWidth;
         readonly int mapHeight;
-        public static ICell[,] WorldMap;
+        public  ICell[,] WorldMap;
 
         public Map(int x, int y)
         {
