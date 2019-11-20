@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CivaGame
 {
-    class EmptyItem : IItem
+    public class EmptyItem : IItem
     {
         public string GetImageFileName()
         {
@@ -17,7 +17,7 @@ namespace CivaGame
         }
     }
 
-    class FoodItem : IItem
+    public class FoodItem : IItem
     {
         public string GetImageFileName()
         {
@@ -30,7 +30,7 @@ namespace CivaGame
         }
     }
 
-    class Wood : IItem
+    public class Wood : IItem
     {
         public string GetImageFileName()
         {
@@ -43,7 +43,7 @@ namespace CivaGame
         }
     }
 
-    class Stone : IItem
+    public class Stone : IItem
     {
         public string GetImageFileName()
         {
@@ -56,7 +56,7 @@ namespace CivaGame
         }
     }
 
-    class Gold : IItem
+    public class Gold : IItem
     {
         public string GetImageFileName()
         {
@@ -69,7 +69,7 @@ namespace CivaGame
         }
     }
 
-    class Axe : IItem
+    public class Axe : IItem
     {
         public string GetImageFileName()
         {
@@ -82,7 +82,7 @@ namespace CivaGame
         }
     }
 
-    class Pickaxe : IItem
+    public class Pickaxe : IItem
     {
         public string GetImageFileName()
         {

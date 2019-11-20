@@ -4,7 +4,7 @@ using FluentAssertions;
 
 namespace Tests
 {
-    public class Tests
+    public class MapTests
     {
         [SetUp]
         public void Setup()
@@ -26,7 +26,24 @@ namespace Tests
         {
             var map = new Map(2, 2);
             map.BuildChurch(1, 1);
-            map.WorldMap[1, 1].Should().BeOfType(Map.Church);
+            map.WorldMap[1, 1].Should().BeOfType<Map.Church>();
+        }
+
+        [Test]
+        public void kek()
+        {
+            var map = new Map(50, 50);
+            ICell cell;
+            for (var i = 0; i < 50; i++)
+                for (var j = 0; j < 50; j++)
+                {
+                    if (map.WorldMap[i, j] is Map.Grass)
+                    {
+                        cell = map.WorldMap[i, j];
+                        map.Interact(i, j, new EmptyItem());
+                    }
+
+                }
         }
     }
 }
