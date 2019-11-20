@@ -6,11 +6,6 @@ namespace Tests
 {
     public class MapTests
     {
-        [SetUp]
-        public void Setup()
-        {
-            
-        }
 
         [Test]
         public void BorderTests()
@@ -30,20 +25,39 @@ namespace Tests
         }
 
         [Test]
-        public void kek()
+        public void InteractWithGrassTest()
         {
             var map = new Map(50, 50);
-            ICell cell;
+            ICell cell = null;
             for (var i = 0; i < 50; i++)
                 for (var j = 0; j < 50; j++)
                 {
                     if (map.WorldMap[i, j] is Map.Grass)
                     {
-                        cell = map.WorldMap[i, j];
                         map.Interact(i, j, new EmptyItem());
+                        cell = map.WorldMap[i, j];
+                        break;
                     }
-
                 }
+            cell.Should().BeOfType<Map.EmptyGrass>();
+        }
+
+        [Test]
+        public void InteractWithForest()
+        {
+            var map = new Map(50, 50);
+            ICell cell = null;
+            for (var i = 0; i < 50; i++)
+                for (var j = 0; j < 50; j++)
+                {
+                    if (map.WorldMap[i, j] is Map.Forest)
+                    {
+                        map.Interact(i, j, new Axe());
+                        cell = map.WorldMap[i, j];
+                        break;
+                    }
+                }
+            cell.Should().BeOfType<Map.Grass>();
         }
     }
 }
