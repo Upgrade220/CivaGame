@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CivaGame
 {
-    class Game
+    public class Game
     {
         public int MapSizeX { get; }
         public int MapSizeY { get; }

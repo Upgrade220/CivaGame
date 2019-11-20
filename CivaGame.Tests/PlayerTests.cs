@@ -58,10 +58,16 @@ namespace Tests
         }
 
         [Test]
-        public void kaAa()
+        public void UseItemTest()
         {
             var player = new Player(0, 0, 1);
-
+            player.AddItem(new FoodItem());
+            player.AddItem(new FoodItem());
+            player.AddItem(new FoodItem());
+            player.UseItem(0, 1);
+            player.InventoryItemsCount[0].Should().Be(2);
+            player.UseItem(0, 2);
+            player.InventoryItemsCount[0].Should().Be(0);
         }
     }
 }
