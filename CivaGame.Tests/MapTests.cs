@@ -6,7 +6,6 @@ namespace Tests
 {
     public class MapTests
     {
-
         [Test]
         public void BorderTests()
         {
@@ -16,6 +15,7 @@ namespace Tests
             map.IsInBorders(-1, -1).Should().BeFalse();
             map.IsInBorders(2, 2).Should().BeFalse();
         }
+
         [Test]
         public void ChurchBuildingTests()
         {
