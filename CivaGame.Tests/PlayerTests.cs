@@ -40,8 +40,27 @@ namespace Tests
         public void AddItemToStack()
         {
             var player = new Player(0, 0, 1);
-            player.AddItem(new FoodItem);
-            player.AddItem(new FoodItem);
+            player.AddItem(new FoodItem());
+            player.AddItem(new FoodItem());
+            player.InventoryItemsCount[0].Should().Be(2);
+        }
+
+        [Test]
+        public void BuilChurchTest()
+        {
+            var player = new Player(0, 0, 1);
+            for (var i = 0; i < 10; i++) 
+                player.AddItem(new Wood());
+            for (var i = 0; i < 5; i++)
+                player.AddItem(new Stone());
+            player.AddItem(new Gold());
+            player.BuildChurch().Should().BeTrue();
+        }
+
+        [Test]
+        public void kaAa()
+        {
+            var player = new Player(0, 0, 1);
 
         }
     }
