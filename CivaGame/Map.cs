@@ -15,6 +15,7 @@ namespace CivaGame
             mapWidth = x;
             mapHeight = y;
             var rnd = new Random();
+            WorldMap = new ICell[mapWidth, mapHeight];
             for (var i = 0; i < mapWidth; i++)
                 for (var j = 0; j < mapHeight; j++)
                 {

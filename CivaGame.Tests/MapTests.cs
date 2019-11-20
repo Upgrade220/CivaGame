@@ -1,4 +1,6 @@
 using NUnit.Framework;
+using CivaGame;
+using FluentAssertions;
 
 namespace Tests
 {
@@ -7,12 +9,14 @@ namespace Tests
         [SetUp]
         public void Setup()
         {
+            
         }
 
         [Test]
-        public void Test1()
+        public void BorderTests()
         {
-            Assert.Pass();
+            var map = new Map(2, 2);
+            map.IsInBorders(1, 1).Should().BeTrue();
         }
     }
 }
