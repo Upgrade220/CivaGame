@@ -42,7 +42,9 @@ namespace CivaGame
                 InventoryItemsCount[i] = 0;
                 Inventory[i] = new EmptyItem();
             }
-            WoodCount = StoneCount = GoldCount = 0;
+            WoodCount = 0;
+            StoneCount = 0; 
+            GoldCount = 0;
             DifficultyRate = difficultyRate;
         }
 
@@ -61,13 +63,16 @@ namespace CivaGame
 
         public void GetDamage (int damageValue)
         {
-            if((HP - damageValue) <= 0)
+            if (damageValue > 0)
             {
-                IsAlive = false;
-                HP = 0;
+                if ((HP - damageValue) <= 0)
+                {
+                    IsAlive = false;
+                    HP = 0;
+                }
+                else
+                    HP -= damageValue;
             }
-            else
-                HP -= damageValue;
         }
 
         private void Heal (int healValue)
