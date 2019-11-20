@@ -75,6 +75,7 @@ namespace CivaGame
                 HP = 100;
             else
                 HP += healValue;
+            HP.GetType();
         }
 
         public void AddItem(IItem item)
@@ -82,7 +83,7 @@ namespace CivaGame
             var emptySlot = Inventory.Length;
             bool succes = true;
             for (var i = 0; i < Inventory.Length; i++)
-                if (Inventory[i] == item && InventoryItemsCount[i] <= Inventory[i].MaxStack())
+                if (Inventory[i].GetType() == item.GetType() && InventoryItemsCount[i] <= Inventory[i].MaxStack())
                 {
                     InventoryItemsCount[i]++;
                     break;

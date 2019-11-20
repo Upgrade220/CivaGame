@@ -8,5 +8,6 @@ namespace CivaGame
     {
         string GetImageFileName();
         int MaxStack();
+        //Type GetType();
     }
 }
