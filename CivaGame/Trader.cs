@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CivaGame
 {
-    class Trader : ICreature
+    public class Trader : ICreature
     {
         public int X { get; set; }
         public int Y { get; set; }
