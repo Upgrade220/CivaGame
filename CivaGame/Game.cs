@@ -63,13 +63,13 @@ namespace CivaGame
                         Player.Y = 0;
                     break;
                 case Direction.Left:
-                    if (Map.IsInBorders(Player.X, Player.Y - 1))
+                    if (Map.IsInBorders(Player.X - 1, Player.Y))
                         Player.X--;
                     else
                         Player.X = MapSizeX - 1;
                     break;
                 case Direction.Right:
-                    if (Map.IsInBorders(Player.X, Player.Y + 1))
+                    if (Map.IsInBorders(Player.X + 1, Player.Y))
                         Player.X++;
                     else
                         Player.X = 0;
