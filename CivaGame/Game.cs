@@ -14,6 +14,7 @@ namespace CivaGame
         public Player Player { get; private set; }
         public Map Map { get; private set; }
         public Trader Trader { get; private set; }
+        public const int ElementSize = 100;
 
         public Game()
         {
@@ -89,12 +90,12 @@ namespace CivaGame
             {
                 if (item is Axe && Money >= 50)
                 {
-                    Player.AddItem(new Axe());
+                    Player.AddItem(new Axe(), new EmptyItem());
                     ChangeMoney(-50);
                 }
                 else if (item is Pickaxe && Money >= 100)
                 {
-                    Player.AddItem(new Pickaxe());
+                    Player.AddItem(new Pickaxe(), new EmptyItem());
                     ChangeMoney(-100);
                 }
             }
@@ -114,34 +115,42 @@ namespace CivaGame
         {
             var rnd = new Random();
             var cell = Map.Interact(Player.X, Player.Y, Player.Inventory[inventoryIndex]);
+            var selectedItem = Player.Inventory[inventoryIndex];
             if (cell is Map.Grass)
-                Player.AddItem(new FoodItem());
+            {
+                if (Player.AddItem(new FoodItem(), new EmptyItem()))
+                    ChangeMoney(5);
+            }
             else if (cell is Map.Forest)
             {
-                Player.AddItem(new Wood());
-                ChangeMoney(10);
-                var value = rnd.Next(0, 100);
-                if(value < 5)
+                if (Player.AddItem(new Wood(), selectedItem))
                 {
-                    ChangeMoney(-10);
-                    Player.GetDamage(49);
+                    ChangeMoney(10);
+                    var value = rnd.Next(0, 100);
+                    if (value < 5)
+                    {
+                        ChangeMoney(-10);
+                        Player.GetDamage(49);
+                    }
                 }
             }
             else if (cell is Map.Cave)
             {
-                Player.AddItem(new Stone());
-                ChangeMoney(15);
-                var value = rnd.Next(0, 100);
-                if (value < 10)
+                if (Player.AddItem(new Stone(), selectedItem))
                 {
-                    Player.AddItem(new Gold());
-                    ChangeMoney(100);
-                }
-                value = rnd.Next(0, 100);
-                if (value < 10)
-                {
-                    ChangeMoney(-150);
-                    Player.GetDamage(25);
+                    ChangeMoney(15);
+                    var value = rnd.Next(0, 100);
+                    if (value < 10)
+                    {
+                        if (Player.AddItem(new Gold(), selectedItem))
+                            ChangeMoney(100);
+                    }
+                    value = rnd.Next(0, 100);
+                    if (value < 10)
+                    {
+                        ChangeMoney(-150);
+                        Player.GetDamage(25);
+                    }
                 }
             }
         }

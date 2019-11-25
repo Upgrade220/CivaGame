@@ -15,6 +15,11 @@ namespace CivaGame
         {
             return 0;
         }
+
+        public Type RequiredItem()
+        {
+            return typeof(EmptyItem);
+        }
     }
 
     public class FoodItem : IItem
@@ -27,6 +32,11 @@ namespace CivaGame
         public int MaxStack()
         {
             return 8;
+        }
+
+        public Type RequiredItem()
+        {
+            return typeof(EmptyItem);
         }
     }
 
@@ -41,6 +51,11 @@ namespace CivaGame
         {
             return 64;
         }
+
+        public Type RequiredItem()
+        {
+            return typeof(Axe);
+        }
     }
 
     public class Stone : IItem
@@ -53,6 +68,11 @@ namespace CivaGame
         public int MaxStack()
         {
             return 64;
+        }
+
+        public Type RequiredItem()
+        {
+            return typeof(Pickaxe);
         }
     }
 
@@ -67,6 +87,11 @@ namespace CivaGame
         {
             return 64;
         }
+
+        public Type RequiredItem()
+        {
+            return typeof(Pickaxe);
+        }
     }
 
     public class Axe : IItem
@@ -80,6 +105,11 @@ namespace CivaGame
         {
             return 1;
         }
+
+        public Type RequiredItem()
+        {
+            return typeof(EmptyItem);
+        }
     }
 
     public class Pickaxe : IItem
@@ -92,6 +122,11 @@ namespace CivaGame
         public int MaxStack()
         {
             return 1;
+        }
+
+        public Type RequiredItem()
+        {
+            return typeof(EmptyItem);
         }
     }
 }

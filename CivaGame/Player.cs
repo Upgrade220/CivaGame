@@ -19,16 +19,16 @@ namespace CivaGame
 
         public Player(int x, int y, int difficultyRate)
         {
-            var inventoryLenght = 8;
+            var inventoryLength = 8;
             HP = 100;
             X = x;
             Y = y;
             Food = 100;
             IsAlive = true;
             IsEnoughForChurch = false;
-            Inventory = new IItem[inventoryLenght];
-            InventoryItemsCount = new int[inventoryLenght];
-            for (int i = 0; i < 8; i++)
+            Inventory = new IItem[inventoryLength];
+            InventoryItemsCount = new int[inventoryLength];
+            for (int i = 0; i < inventoryLength; i++)
             {
                 InventoryItemsCount[i] = 0;
                 Inventory[i] = new EmptyItem();
@@ -78,33 +78,38 @@ namespace CivaGame
             HP.GetType();
         }
 
-        public void AddItem(IItem item)
+        public bool AddItem(IItem item, IItem selectedItem)
         {
-            var emptySlot = Inventory.Length;
             bool succes = true;
-            for (var i = 0; i < Inventory.Length; i++)
-                if (Inventory[i].GetType() == item.GetType() && InventoryItemsCount[i] <= Inventory[i].MaxStack())
+            for (var i = 0; i <= Inventory.Length - 1; i++)
+                if (Inventory[i].GetType() == item.GetType()
+                    && item.RequiredItem() == selectedItem.GetType()
+                    && InventoryItemsCount[i] <= Inventory[i].MaxStack())
                 {
                     InventoryItemsCount[i]++;
                     break;
                 }
-                else if (Inventory[i] is EmptyItem && emptySlot > i)
-                    emptySlot = i;
+                else if (Inventory[i] is EmptyItem
+                    && item.RequiredItem() == selectedItem.GetType())
+                {
+                    Inventory[i] = item;
+                    InventoryItemsCount[i] = 1;
+                    break;
+                }
                 else if (i == Inventory.Length - 1)
                     succes = false;
-            if (!succes)
+            if (succes)
             {
-                Inventory[emptySlot] = item;
-                InventoryItemsCount[emptySlot] = 1;
+                if (item is Wood)
+                    WoodCount++;
+                else if (item is Stone)
+                    StoneCount++;
+                else if (item is Gold)
+                    GoldCount++;
+                if (WoodCount == DifficultyRate * 10 && StoneCount == DifficultyRate * 5 && GoldCount == DifficultyRate)
+                    IsEnoughForChurch = true;
             }
-            if (item is Wood)
-                WoodCount++;
-            else if (item is Stone)
-                StoneCount++;
-            else if (item is Gold)
-                GoldCount++;
-            if (WoodCount == DifficultyRate * 10 && StoneCount == DifficultyRate * 5 && GoldCount == DifficultyRate)
-                IsEnoughForChurch = true;
+            return succes;
         }
 
         public bool BuildChurch()
