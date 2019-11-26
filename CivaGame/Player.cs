@@ -84,8 +84,10 @@ namespace CivaGame
             for (var i = 0; i <= Inventory.Length - 1; i++)
                 if (Inventory[i].GetType() == item.GetType()
                     && item.RequiredItem() == selectedItem.GetType()
-                    && InventoryItemsCount[i] <= Inventory[i].MaxStack())
+                    && InventoryItemsCount[i] < Inventory[i].MaxStack())
                 {
+                    if (item is Wood)
+                        InventoryItemsCount[i] += 3;
                     InventoryItemsCount[i]++;
                     break;
                 }
@@ -93,7 +95,9 @@ namespace CivaGame
                     && item.RequiredItem() == selectedItem.GetType())
                 {
                     Inventory[i] = item;
-                    InventoryItemsCount[i] = 1;
+                    if (item is Wood)
+                        InventoryItemsCount[i] = 3;
+                    InventoryItemsCount[i] += 1;
                     break;
                 }
                 else if (i == Inventory.Length - 1)
@@ -101,12 +105,12 @@ namespace CivaGame
             if (succes)
             {
                 if (item is Wood)
-                    WoodCount++;
+                    WoodCount+=4;
                 else if (item is Stone)
                     StoneCount++;
                 else if (item is Gold)
                     GoldCount++;
-                if (WoodCount == DifficultyRate * 10 && StoneCount == DifficultyRate * 5 && GoldCount == DifficultyRate)
+                if (WoodCount >= DifficultyRate * 10 && StoneCount >= DifficultyRate * 5 && GoldCount >= DifficultyRate)
                     IsEnoughForChurch = true;
             }
             return succes;
@@ -141,7 +145,7 @@ namespace CivaGame
                         InventoryItemsCount[i] -= DifficultyRate;
                     }
                 }
-                if (WoodCount == DifficultyRate * 10 && StoneCount == DifficultyRate * 5 && GoldCount == DifficultyRate)
+                if (WoodCount >= DifficultyRate * 10 && StoneCount >= DifficultyRate * 5 && GoldCount >= DifficultyRate)
                     IsEnoughForChurch = true;
                 else
                     IsEnoughForChurch = false;
@@ -154,7 +158,10 @@ namespace CivaGame
         {
             var item = Inventory[i];
             if (item is FoodItem)
+            {
                 Heal(25);
+                ChangeFood(50);
+            }
             if(!(item is Axe) || !(item is Pickaxe))
                 InventoryItemsCount[i] -= count;
             if (InventoryItemsCount[i] <= 0)

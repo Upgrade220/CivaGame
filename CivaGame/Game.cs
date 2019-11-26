@@ -15,12 +15,14 @@ namespace CivaGame
         public Map Map { get; private set; }
         public Trader Trader { get; private set; }
         public const int ElementSize = 100;
+        private Random rnd;
 
         public Game()
         {
             CurrentState = GameState.Menu;
             Money = 0;
             MapSizeX = MapSizeY = 9;
+            rnd = new Random();
         }
 
         public Point GetPlayerPosition()
@@ -30,7 +32,6 @@ namespace CivaGame
 
         public void StartAction()
         {
-            var rnd = new Random();
             var playerX = rnd.Next(0, MapSizeX - 1);
             var playerY = rnd.Next(0, MapSizeY - 1);
             var traderX = rnd.Next(0, MapSizeX - 1);
@@ -49,6 +50,7 @@ namespace CivaGame
 
         public void Move(Direction direction)
         {
+            Player.ChangeFood(-5);
             switch (direction)
             {
                 case Direction.Down:
@@ -113,7 +115,6 @@ namespace CivaGame
 
         public void InteractPlayerWithMap(int inventoryIndex)
         {
-            var rnd = new Random();
             var cell = Map.Interact(Player.X, Player.Y, Player.Inventory[inventoryIndex]);
             var selectedItem = Player.Inventory[inventoryIndex];
             if (cell is Map.Grass)

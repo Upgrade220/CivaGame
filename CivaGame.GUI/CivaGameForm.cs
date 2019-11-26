@@ -11,23 +11,40 @@ using System.Windows.Forms;
 
 namespace CivaGame.GUI
 {
+    public class Bitmaps
+    {
+        private Bitmaps()
+        {
+
+        }
+
+        public Bitmap GetImage(string name) => bitmaps[name];
+
+        private readonly Dictionary<string, Bitmap> bitmaps = new Dictionary<string, Bitmap>();
+
+        private static Lazy<Bitmaps> instance = new Lazy<Bitmaps>(() => new Bitmaps());
+        public static Bitmaps Instance => instance.Value;
+    }
+
     public partial class CivaGameForm : Form
     {
         private readonly Dictionary<string, Bitmap> bitmaps = new Dictionary<string, Bitmap>();
         private readonly Game game;
-        private int inventorySlotSeted;
+        private InventoryControl inventoryControl;
 
         public CivaGameForm(DirectoryInfo imagesDirectory = null)
         {
             game = new Game();
             game.StartAction();
-            ClientSize = new Size(Game.ElementSize * game.MapSizeX, Game.ElementSize * (game.MapSizeY + 1));
+            ClientSize = new Size(Game.ElementSize * (game.MapSizeX + 1), Game.ElementSize * (game.MapSizeY + 1));
             FormBorderStyle = FormBorderStyle.FixedDialog;
             if (imagesDirectory == null)
                 imagesDirectory = new DirectoryInfo("Pictures");
             foreach (var image in imagesDirectory.GetFiles("*.png"))
                 bitmaps[image.Name] = (Bitmap)Image.FromFile(image.FullName);
-            inventorySlotSeted = 0;
+
+            inventoryControl = new InventoryControl(game, bitmaps);
+            inventoryControl.InventorySlotSeted = 0;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -39,8 +56,14 @@ namespace CivaGame.GUI
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            //var dict = new Dictionary<Keys, Action>();
+            //dict.Add(Keys.Down, () => game.Move(Direction.Up));
+            //dict.Add(Keys.Down, () => game.Move(Direction.Up));
+            //dict.Add(Keys.Down, () => game.Move(Direction.Up));
+            //dict.Add(Keys.Down, () => game.Move(Direction.Up));
+
             base.OnKeyDown(e);
-            switch(e.KeyData)
+            switch (e.KeyData)
             {
                 case Keys.Up:
                     game.Move(Direction.Up);
@@ -55,37 +78,43 @@ namespace CivaGame.GUI
                     game.Move(Direction.Right);
                     break;
                 case Keys.Enter:
-                    game.InteractPlayerWithMap(inventorySlotSeted);
+                    game.InteractPlayerWithMap(inventoryControl.InventorySlotSeted);
                     break;
-                case Keys.RShiftKey:
+                case Keys.Space:
                     game.PlayerBuildChurch();
                     break;
-                case Keys.RControlKey:
-                    game.PlayerEat(inventorySlotSeted);
+                case Keys.NumPad0:
+                    game.PlayerEat(inventoryControl.InventorySlotSeted);
+                    break;
+                case Keys.NumPad1:
+                    game.PlayerBuy(new Axe());
+                    break;
+                case Keys.NumPad2:
+                    game.PlayerBuy(new Pickaxe());
                     break;
                 case Keys.D1:
-                    inventorySlotSeted = 0;
+                    inventoryControl.InventorySlotSeted = 0;
                     break;
                 case Keys.D2:
-                    inventorySlotSeted = 1;
+                    inventoryControl.InventorySlotSeted = 1;
                     break;
                 case Keys.D3:
-                    inventorySlotSeted = 2;
+                    inventoryControl.InventorySlotSeted = 2;
                     break;
                 case Keys.D4:
-                    inventorySlotSeted = 3;
+                    inventoryControl.InventorySlotSeted = 3;
                     break;
                 case Keys.D5:
-                    inventorySlotSeted = 4;
+                    inventoryControl.InventorySlotSeted = 4;
                     break;
                 case Keys.D6:
-                    inventorySlotSeted = 5;
+                    inventoryControl.InventorySlotSeted = 5;
                     break;
                 case Keys.D7:
-                    inventorySlotSeted = 6;
+                    inventoryControl.InventorySlotSeted = 6;
                     break;
                 case Keys.D8:
-                    inventorySlotSeted = 7;
+                    inventoryControl.InventorySlotSeted = 7;
                     break;
                 default:
                     break;
@@ -95,27 +124,80 @@ namespace CivaGame.GUI
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            if(game.CurrentState == GameState.Action)
+            DrawMap(e);
+
+            e.Graphics.DrawImage(bitmaps[game.Trader.GetImageFileName()],
+                new Point(game.Trader.X * Game.ElementSize, (game.MapSizeY - game.Trader.Y - 1) * Game.ElementSize));
+
+            e.Graphics.DrawImage(bitmaps[game.Player.GetImageFileName()],
+                new Point(game.Player.X * Game.ElementSize, (game.MapSizeY - game.Player.Y - 1) * Game.ElementSize));
+
+            var hpRectangle = new Rectangle(new Point(game.MapSizeX * Game.ElementSize), new Size(Game.ElementSize / 2, Game.ElementSize * (game.MapSizeY + 1)));
+            var hpRectangleFill = new Rectangle(new Point((int)((game.MapSizeX + 0.5) * Game.ElementSize)), new Size(Game.ElementSize / 2, (int)(Game.ElementSize * (game.MapSizeY + 1) * ((double)game.Player.HP / 100))));
+            e.Graphics.DrawRectangle(new Pen(Brushes.Red), hpRectangle);
+            e.Graphics.FillRectangle(Brushes.Red, hpRectangleFill);
+
+            var foodRectangle = new Rectangle(new Point((int)((game.MapSizeX + 0.5) * Game.ElementSize)), new Size(Game.ElementSize / 2, Game.ElementSize * (game.MapSizeY + 1)));
+            var foodRectangleFill = new Rectangle(new Point(game.MapSizeX * Game.ElementSize), new Size(Game.ElementSize / 2, (int)(Game.ElementSize * (game.MapSizeY + 1) * ((double)game.Player.Food / 100))));
+            e.Graphics.DrawRectangle(new Pen(Brushes.Brown), foodRectangle);
+            e.Graphics.FillRectangle(Brushes.Brown, foodRectangleFill);
+
+            inventoryControl.Draw(e.Graphics);
+        }
+
+        private void DrawMap(PaintEventArgs e)
+        {
             e.Graphics.FillRectangle(
-                Brushes.Black, 0, 0, Game.ElementSize * game.MapSizeX,
-                Game.ElementSize * game.MapSizeY);
+                            Brushes.Black, 0, 0,
+                            Game.ElementSize * game.MapSizeX,
+                            Game.ElementSize * game.MapSizeY);
+
             for (var i = 0; i < game.MapSizeX; i++)
                 for (var j = 0; j < game.MapSizeY; j++)
-                    e.Graphics.DrawImage(bitmaps[game.Map.WorldMap[i, j].GetImageFileName()], new Point(i * Game.ElementSize, (game.MapSizeY - j - 1) * Game.ElementSize));
-            e.Graphics.DrawImage(bitmaps[game.Trader.GetImageFileName()], new Point(game.Trader.X * Game.ElementSize, (game.MapSizeY - game.Trader.Y - 1) * Game.ElementSize));
-            e.Graphics.DrawImage(bitmaps[game.Player.GetImageFileName()], new Point(game.Player.X * Game.ElementSize, (game.MapSizeY - game.Player.Y - 1)* Game.ElementSize));
-            e.Graphics.TranslateTransform(0, game.MapSizeY * Game.ElementSize);
+                    e.Graphics.DrawImage(bitmaps[game.Map.WorldMap[i, j].GetImageFileName()],
+                        new Point(i * Game.ElementSize, (game.MapSizeY - j - 1) * Game.ElementSize));
+        }
+    }
+
+    public class InventoryControl : IControl
+    {
+        private readonly Game game;
+        private readonly Dictionary<string, Bitmap> bitmaps;
+        public int InventorySlotSeted { get; set; }
+
+        public int Priority => 0;
+
+        public InventoryControl(Game game, Dictionary<string, Bitmap> bitmaps)
+        {
+            this.game = game;
+            this.bitmaps = bitmaps;
+        }
+
+        public void Draw(Graphics graphics)
+        {
+            graphics.TranslateTransform(0, game.MapSizeY * Game.ElementSize);
             for (var i = 0; i < game.Player.Inventory.Length; i++)
             {
-                e.Graphics.DrawImage(bitmaps[game.Player.Inventory[i].GetImageFileName()], new Point(i * Game.ElementSize, 0));
-                e.Graphics.DrawString((i + 1).ToString(), new Font("Arial", 8, FontStyle.Bold), Brushes.Black, i * Game.ElementSize, - 5);
-                e.Graphics.DrawString(game.Player.InventoryItemsCount[i].ToString(), new Font("Arial", 8, FontStyle.Bold), Brushes.Black, i * Game.ElementSize, Game.ElementSize - 15);
+                graphics.DrawImage(bitmaps[game.Player.Inventory[i].GetImageFileName()], new Point(i * Game.ElementSize, 0));
+                graphics.DrawString((i + 1).ToString(), new Font("Arial", 8, FontStyle.Bold), Brushes.Black, i * Game.ElementSize, -5);
+                graphics.DrawString(game.Player.InventoryItemsCount[i].ToString(), new Font("Arial", 8, FontStyle.Bold), Brushes.Black, i * Game.ElementSize, Game.ElementSize - 15);
             }
-            e.Graphics.DrawImage(bitmaps["Sign.png"], new Point(Game.ElementSize * (game.MapSizeX - 1), 0));
-            e.Graphics.DrawString("Money:", new Font("Arial", 20, FontStyle.Bold), Brushes.Black, Game.ElementSize * (game.MapSizeX - 1), 10);
-            e.Graphics.DrawString(game.Money.ToString(), new Font("Arial", 20, FontStyle.Bold), Brushes.Black, Game.ElementSize * (game.MapSizeX - 1), 50);
-            var inventorySlotPoint = inventorySlotSeted * Game.ElementSize;
+
+            var signBitmap = bitmaps["Sign.png"];
+            graphics.DrawImage(signBitmap, Game.ElementSize * (game.MapSizeX - 1), 0, signBitmap.Width, signBitmap.Height);
+
+            graphics.DrawString("Money:", new Font("Arial", 20, FontStyle.Bold), Brushes.Black, Game.ElementSize * (game.MapSizeX - 1), 10);
+            graphics.DrawString(game.Money.ToString(), new Font("Arial", 20, FontStyle.Bold), Brushes.Black, Game.ElementSize * (game.MapSizeX - 1), 50);
+            var inventorySlotPoint = InventorySlotSeted * Game.ElementSize;
             var InventorySlotRectangle = new Rectangle(new Point(inventorySlotPoint), new Size(Game.ElementSize, Game.ElementSize));
-            e.Graphics.DrawRectangle(new Pen(Brushes.Red, 2), InventorySlotRectangle);
+            graphics.DrawRectangle(new Pen(Brushes.Red, 2), InventorySlotRectangle);
         }
+    }
+
+    public interface IControl
+    {
+        void Draw(Graphics graphics);
+        int Priority { get; }
     }
 }
